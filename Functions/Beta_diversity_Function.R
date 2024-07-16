@@ -8,56 +8,6 @@
 ###################################################################
 ###################################################################
 
-#### THINKing in rarefy not sum/percentatge
-
-
-###################################################
-###############Chargue libraries###################
-###################################################
-
-
-pacman::p_load(vegan,####Analysis package
-               caret,#### Analysis package
-               phyloseq,#### Filetype package
-               readxl, #### Entry table package
-               openxlsx, #### Entry table package
-               dplyr, #### Table manage package
-               ggplot2, #### Plot package
-               ggrepel, #### Plot package
-               microbial ####normalitzation
-) 
-
-
-###################################################
-###############Phyloseq entry######################
-###################################################
-
-
-
-## Automatic entry
-
-  #Enter directory of a created phytloseq( *:RData)
-
-## Manual entry
-
-# Sample data
-
-# Otu table
-
-# Taxmat table
-
-
-###################################################
-###############BETA    PARAMETERS##################
-###################################################
-# 
-# Physeq1 <- readRDS(file = "C:/Users/Adrià/Desktop/Trabajo/Microbioma R/Clean_codes/Gut.rds") #####Put the phyloseq object with sample data
-# Matrix_type <- "wunifrac" ####### Could be bray, euclidean for low alfa diversity try Weighted Unifrac, could be better having a low rare species
-# Normalitzation <- "relative" ###'"relative","TMM","vst","log2".
-# Adjformula <- ("Post_coital")
-# Grup_variable <- "Post_coital"####### Name the variable of interest Group
-# Results_directory <- paste0(getwd(),"/Gràfics/Vaginal_samples/Beta/") ###### Can use getwd if you setted the wd before, put "/" at final
-# Analysis_name <- "Model4"
 ###################################################
 ###############Beta FUNCTIONS######################
 ###################################################
@@ -144,10 +94,4 @@ Beta_function <- function(Physeq,Adjformula,Normalitzation,Matrix_type,Grup_vari
 }
 
 
-
-###################################################
-########RUN BETA   (For non source users)##########
-###################################################
-
-# Beta_function(Physeq,Matrix_type)
 
