@@ -8,52 +8,6 @@
 ###################################################################
 ###################################################################
 
-###################################################
-###############Chargue libraries###################
-###################################################
-
-
-pacman::p_load(ANCOMBC,####Analysis package
-               caret,#### Analysis package
-               phyloseq,#### Filetype package
-               readxl, #### Entry table package
-               openxlsx, #### Entry table package
-               dplyr, #### Table manage package
-               tidyverse, #### Plot package
-               ggrepel #### Plot package
-               ) 
-
-
-
-###################################################
-###############Phyloseq entry######################
-###################################################
-
-
-
-## Automatic entry
-
-  #Enter directory of a created phytloseq( *:RData)
-
-## Manual entry
-
-# Sample data
-
-# Otu table
-
-# Taxmat table
-
-###################################################
-###############ANCOMBC PARAMETERS##################
-###################################################
-# 
-# Physeq <- readRDS(file = "C:/Users/Adrià/Desktop/Trabajo/Microbioma R/Clean_codes/Vaginal2.rds")#####Put the phyloseq object with sample data
-# Taxonomy <- "Species" ##### Colname of tax_table normally Species, Genus or Family
-# Padj_Method <- "bonferroni" ####### Padj method, use fdr and bonferroni
-# Adjformula <- "Age+BMI+Pacient" ####### Fix formula, to adjust the analysis
-# Grup_variable <- "Pacient" #### Name of group variable
-# Analysis_name <- "Vaginal_Model1"
-# Results_directory <- paste0(getwd(),"/Gràfics/Differential/") ###### Can use getwd if you setted the wd before, put "/" at final
 
 ###################################################
 ###############ANCOMBC FUNCTIONS###################
