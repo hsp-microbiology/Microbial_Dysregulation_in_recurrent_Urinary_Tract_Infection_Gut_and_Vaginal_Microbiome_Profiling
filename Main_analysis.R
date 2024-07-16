@@ -4,21 +4,20 @@
 ###     Functions Main file exam -> Created by Adrià         ######
 ###  Linkedin: https://www.linkedin.com/in/adria-cruells/    ######
 ###  ORCID: https://orcid.org/0000-0002-1179-7997            ######
-###  Github:    Working on it                                ######
+###  Github:   https://github.com/ADRS94                     ######
 ###################################################################
 ###################################################################
 
-rm(list=ls())
 
 ######## Enter the phyloseq object, set working directory and chargue libraries
 
 
-setwd("C:/Users/Adrià/Desktop/Trabajo/Microbioma R") ###### put the directory were you work
-Vaginal <- readRDS(file = "C:/Users/Adrià/Desktop/Trabajo/Microbioma R/Clean_codes/Vaginal.rds")  #Enter directory of a created phytloseq( *:RData)
-Gut <- readRDS(file = "C:/Users/Adrià/Desktop/Trabajo/Microbioma R/Clean_codes/Gut.rds")  #Enter directory of a created phytloseq( *:RData)    subset_taxa(!Genus == "Homo")%>% for vaginal and fecal microbiome
+setwd("") ###### put the directory were you work
+Vaginal <- readRDS(file = "")  #Enter directory of a created phytloseq( *:RData)
+Gut <- readRDS(file = "")  #Enter directory of a created phytloseq( *:RData)  
 
 ##########
-####Filter
+####Filter the non-classified species
 ##########
 library(dplyr)
 
@@ -39,7 +38,6 @@ library(table1)
 
 #### obtain the data from phyloseq and select the interest variables ( in this case (Patient//Age(years)//BMI//Menopause//UTI/year))
 
-
 Patients_data <- data.frame(sample_data(Vaginal)) %>%
   dplyr::select(Pacient,BMI,Age,Menopause,Score_pelvic,Postcoital.UTI) 
 
@@ -48,7 +46,6 @@ Patients_data <- data.frame(sample_data(Vaginal)) %>%
 
 Patients_data$Postcoital.UTI <- as.factor(Patients_data$Postcoital.UTI)
 Patients_data$Postcoital.UTI[Patients_data$Pacient == "No"] <- "No"
-
 
 
 # Factor the basic variables that
@@ -76,18 +73,19 @@ table1(~  BMI + Menopause + Age + Postcoital.UTI + Score_pelvic   | Pacient, dat
 ##Analysis parameters
 ################
 
-Adjformula <- ("Pacient+Age+BMI+Menopause") #####Model formula (Ex model 3)
+Adjformula <- ("Pacient+Age+BMI+Menopause") #####Model formula 
 Grup_variable <- "Pacient" #### Name of group variable
-Analysis_name <- "Fecal_Norarefy" ###Group analysis name
-Results_directory <- "./Clean_codes/Def_final_code"
-Normalitzation <- "TMM"
+Analysis_name <- "Fecal" ###Group analysis name
+Results_directory <- ""
+Normalitzation <- "TMM" ## For beta diversity
 
 
 for (analysis in list.files(paste0(getwd(),"/Clean_codes/"), pattern = ".R")) { ####Put the directory whith all functions
   source(paste0(getwd(),"/Clean_codes/",analysis))
 }
 library(microViz)
-## Put better names
+
+## Modify metadata names
 
 Gut <- Gut %>%
   ps_mutate(
@@ -121,43 +119,6 @@ Fig1_A <- Composition_function(Gut, ####Physeq
                      Results_directory) ## ## Result of file names
 
 
-############
-##### Especific taxa composition function
-############
-
-Organism <- c("Escherichia coli","Enterococcus faecalis","Pseudomonas aeruginosa","Klebsiella pneumoniae","Proteus mirabilis",
-              "Staphylococcus saprophyticus","Serratia","Providencia","Citrobacter","Enterobacter",
-              "Aerococcus","Oligella","Actinobaculum","Actinotignum") ###"New pathogens"
-
-
-# Escherichia coli
-# Staphylococcus saprophyticus
-# Klebsiella pneumoniae o Proteus mirabilis
-# Enterococcus faecalis 
-# Providencia spp., Morganella spp., Citrobacter spp., Enterobacter spp. o Serratia spp.
-# Pseudomonas aeruginosa 
-
-
-# Aerococcus
-# Oligella
-# Actinobacteria ( En heces es un abundante, no creo que podamos usarlo)
-# Actinobaculum
-# Actinotignum
-
-
-# 
-# List_fecal <- list()
-# 
-# for (i in Organism) {
-#   
-#   for (Micro in unique(rownames(otu_table(Gut))[grep(pattern = i,rownames(otu_table(Gut)))])) {
-#     List_fecal <- Taxa_function(Physeq = Gut,Grup_variable = Grup_variable,Microorganism = Micro,
-#                   Analysis_name = Analysis_name,
-#                   Results_directory = Results_directory
-#                     )
-#   }
-# }
-# 
 
 ############
 ##### Alpha diversity function
@@ -244,7 +205,7 @@ ggsave(plot = plot_complete,paste0(Results_directory,"/",Analysis_name,"_all_BH_
 
 
 #############
-##### Discriminant analysis ( Biomarker search) coda 4 microbiome
+##### Discriminant analysis ( Biomarker search) coda 4 microbiome Not function outside, error runing the model
 #############
 
 library(coda4microbiome)
@@ -311,25 +272,6 @@ Fig1_B <- Composition_function(Vaginal, ####Physeq
                      Results_directory) ## ## Result of file names
 
 
-############
-##### Especific taxa composition function
-############
-
-
-Organism <- c("Escherichia coli","Enterococcus faecalis","Pseudomonas aeruginosa","Klebsiella pneumoniae","Proteus mirabilis",
-              "Staphylococcus saprophyticus","Serratia","Providencia","Citrobacter","Enterobacter",
-              "Aerococcus","Oligella","Actinobaculum","Actinotignum") ###"New pathogens"
-
-for (i in Organism) {
-  
-  for (Micro in unique(rownames(otu_table(Vaginal))[grep(pattern = i,rownames(otu_table(Vaginal)))])) {
-    Taxa_function(Physeq = Vaginal,Grup_variable = Grup_variable,Microorganism = Micro,
-                  Analysis_name = Analysis_name,
-                  Results_directory = Results_directory
-    )
-  }
-}
-
 
 ############
 ##### Alpha diversity function
@@ -361,7 +303,6 @@ Fig1_E <- Beta_function(Vaginal,
 ############
 ##### Differential ANCOMBC function
 ############
-
 
 
 vagilfc <- list()
@@ -409,31 +350,6 @@ plot_complete <- ggarrange(plotlist = Plot_list_lfc,labels = c("Order" ,  "Famil
 
 
 ggsave(plot = plot_complete,paste0(Results_directory,"/",Analysis_name,"_all_bonferroni_models.png"), width = 30, height = 30, units = "cm")
-
-
-#############
-##### Discriminant analysis ( Biomarker search) coda 4 microbiome
-#############
-
-library(coda4microbiome)
-
-
-set.seed(123) # to reproduce the results
-
-# Get matric from phyloseq
-
-Vaginal_genus <-tax_agg(Vaginal,rank = "Genus") ##from microviz package
-
-
-Vaginal_matrix <- data.frame(t(data.frame(otu_table(Vaginal)))) ### Get genus possibly, check for the better AUC
-Vaginal_sample <- factor(sample_data(Vaginal)$Pacient)
-Vaginal_covar <- data.frame(sample_data(Vaginal)$Age,sample_data(Vaginal)$BMI,
-                        factor(sample_data(Vaginal)$Menopause))
-Vaginal_sample <- relevel(Vaginal_sample, ref = "No")
-
-coda_glmnet_Crohn<-coda_glmnet(x=Vaginal_matrix,y=Vaginal_sample,covar = Vaginal_covar,nfolds = 5) ## Care sort the mattrix as sample_data 
-
-saveRDS(coda_glmnet_Crohn,"./Coda_vaginal_species.rds")
 
 
 
@@ -691,92 +607,11 @@ CV.BAL.val$accuracy.nvar ### The optimal is 2,
 Fig2_B<- CV.BAL.val$global.plot
 
 
-############
-##### Differential Secom function
-############
-
-## Obtain significant genus 
-# 
-# Vagi_gen <- vagilfc[[5]]
-# Feces_gen <- Feceslfc[[5]]
-# 
-# ##### Select the diferential taxa and observe the effect in the other biome.
-# sigtaxa_vagi <- paste0("Vaginal - ",c(Vagi_gen$taxon[Vagi_gen$diff_PacientYes == "TRUE"],
-#                        "Escherichia","Enterococcus","Pseudomonas","Klebsiella","Proteus",
-#                        "Staphylococcus"))
-# 
-# 
-# sigtaxa_feces <- paste0("Fecal - ",c(Feceslfc$taxon[Feceslfc$diff_PacientYes == "TRUE"],
-# "Escherichia","Enterococcus","Pseudomonas","Klebsiella","Proteus",
-# "Staphylococcus"))
-# 
-# sigtaxa <- c(sigtaxa_vagi,sigtaxa_feces)
-#####Obtain the correlation matrix (the retunr of Both_microbiomes function)
-
-cor_matrix <- as.data.frame(Differential_ecosistem(Gut,Vaginal,"Family"))
-
-#corr_sig <- cor_matrix[grep(paste(sigtaxa,collapse="|"),rownames(cor_matrix)),]
-
-###obtain all effect vaginal - fecal microbiota
-
-
-cor_matrix1 <- cor_matrix[,grep("Fecal",colnames(cor_matrix))]
-cor_matrix1 <- cor_matrix1[grep("Vaginal",rownames(cor_matrix)),]
-
-
-df_linear = data.frame(get_upper_tri(cor_matrix1)) %>%
-  rownames_to_column("var1") %>%
-  pivot_longer(cols = -var1, names_to = "var2", values_to = "value") %>%
-  filter(!is.na(value)) %>%
-  mutate(value = round(value, 2))
-
-tax_name = sort(union(df_linear$var1, df_linear$var2))
-df_linear$var1 = factor(df_linear$var1, levels = tax_name)
-df_linear$var2 = factor(df_linear$var2, levels = tax_name)
-
-
-heat_linear_th = df_linear %>%
-  ggplot(aes(var2, var1, fill = value))+
-  geom_tile(color = "black") +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white", na.value = "grey",
-                       midpoint = 0, limit = c(-1,1), space = "Lab", 
-                       name = NULL)+
-  #geom_text(aes(var2, var1, label = value), color = "black", size = 4) +
-  labs(x = NULL, y = NULL, title = "Correlation between fecal and vaginal microbiome") +
-  theme_bw() +
-   theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 7, hjust = 1,
-                                    face = "italic"),
-         axis.text.y = element_text(size = 7, face = "italic"))
-  #       strip.text.x = element_text(size = 14),
-  #       strip.text.y = element_text(size = 14),
-  #       legend.text = element_text(size = 12),
-  #       plot.title = element_text(hjust = 0.5, size = 15),
-  #       panel.grid.major = element_blank(),
-  #       axis.ticks = element_blank(),
-  #       legend.position = "none") +
-  # coord_fixed()
-
-heat_linear_th
-
-################################ Merge tables
-
-# library(readxl)
-# 
-# Post <- read_excel(path = "./../../../Article_ultima_revisió/Supplementary tables/Vaginal_model_Postcoital.xlsx",sheet = "Genus")
-# 
-# Pre <- read_excel(path = "./../../../Article_ultima_revisió/Supplementary tables/Vaginal_model_noPostcoital.xlsx",sheet = "Genus")
-# 
-# library(openxlsx)
-# 
-# Merged_table <- merge(Post,Pre,by = "Taxon",all = T)
-# 
-# write.xlsx(x = Merged_table,file = "./../../../Article_ultima_revisió/Supplementary tables/Genus_vaginal.xlsx")
-
 
 
 ### Figure 1 
 
-# Mostrar la figura
+# Show the figure 1
 
 Fig1 <- ggarrange(
   ggarrange(Fig1_A, Fig1_B, ncol = 2,
@@ -797,7 +632,7 @@ Fig1 <- annotate_figure(Fig1,
 ggsave("./../Article_ultima_revisió/Figures/Figure1.png", plot = Fig1, width = 12, height = 14, dpi = 300) ###DPI mayor, mayor calidad
 
 
-#### Figura 2
+#### Show the figure 2
 
 Fig2 <- ggarrange(Fig2_A, Fig2_B, ncol = 2,
           labels = c("A", "B"))
@@ -811,7 +646,7 @@ ggsave("./../Article_ultima_revisió/Figures/Figure2.png", plot = Fig2, width = 
 
 
 
-#### Figura 3
+#### Show the figure 3
 
 ### Read the tables:
 
@@ -936,20 +771,3 @@ Fig3 <- annotate_figure(Fig3,
 
 # Guardar la figura como una imagen de alta calidad
 ggsave("./../Article_ultima_revisió/Figures/Figure3.png", plot = Fig3, width = 18, height = 14, dpi = 300) ###DPI mayor, mayor calidad
-
-
-
-
-#### Figura 4
-Fig1 <- ggarrange(
-  ggarrange(Fig4_A, Fig4_B, ncol = 2,
-            labels = c("A", "B")),
-  plot_complete,
-  ggarrange(Fig4_D, Fig1_4, ncol = 2,
-            labels = c("D", "E")),
-  Fig4_F,
-  nrow = 4,
-  labels = c("", "C", "", "F")
-)
-
-#### Figura 5
