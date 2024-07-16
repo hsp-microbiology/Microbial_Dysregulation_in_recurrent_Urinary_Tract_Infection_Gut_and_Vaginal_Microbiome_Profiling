@@ -24,36 +24,8 @@ pacman::p_load(ggpubr,####Analysis package
                sjPlot #####Plot package
                ) 
 
-###################################################
-###############Phyloseq entry######################
-###################################################
 
 
-
-## Automatic entry
-
-#ps1 <- readRDS(file = "C:/Users/Adrià/Desktop/Trabajo/Microbioma R/Clean_codes/Vaginal2.rds")  #Enter directory of a created phytloseq( *:RData)
-
-## Manual entry
-
-# Sample data
-
-# Otu table
-
-# Taxmat table
-
-###################################################
-###############Alpha PARAMETERS####################
-###################################################
-# setwd("C:/Users/Adrià/Desktop/Trabajo/Microbioma R") ###### put the directory were you work
-# Physeq <- ps1 #####Put the phyloseq object with sample data
-# Diversity_index <- c("Observed","Chao1","ACE","Shannon","Simpson","InvSimpson" ,"Fisher") ##### Diversity index to plot and extract the model
-# ##################### Can selext the following ones "Observed","Chao1","ACE","Shannon","Simpson","InvSimpson" ,"Fisher"
-# Adjformula <- ("Pacient+Age+BMI+Part_vaginal") ####### Fix formula, to adjust the analysis
-# Grup_variable <- "Pacient" #### Name of group variable
-# Analysis_name <- "Model8"
-# Results_directory <- paste0(getwd(),"/Gràfics/Vaginal_samples/Alpha/") ###### Can use getwd if you setted the wd before, put "/" at final
-# Create_normal_plot <- "No" ###Select if you want non-model plots
 
 ###################################################
 ###############Alpha   FUNCTIONS###################
