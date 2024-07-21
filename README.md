@@ -16,7 +16,7 @@ Run the Main_analysis.R
 
 Run the Final_Code_post_coital.R
 
-### Post-coital score (Figures and tables on supplemental material)  
+### Pelvic floor musculature status (Figures and tables on supplemental material)  
 
 Run the Score_pelvic_supplementary.R
 
